@@ -3,9 +3,55 @@
   <head>
     <meta charset="utf-8">
     <title>Routing Example App</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+	<script src="src/routes.js"></script>
   </head>
   <body>
     <div id="app"></div>
-    <script src="/dist/build.js"></script>
+	
+	<div id="app-3">
+  <span v-if="seen">Now you see me</span>
+</div>
+
+
+<script>
+
+var app3 = new Vue({
+  el: '#app-3',
+  data: {
+    seen: true
+  }
+})
+
+
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    currentRoute: window.location.pathname
+  },
+  computed: {
+    ViewComponent () {
+      const matchingView = routes[this.currentRoute]
+      return matchingView
+        ? require('./pages/' + matchingView + '.vue')
+        : require('./pages/404.vue')
+    }
+  },
+  render (h) {
+    return h(this.ViewComponent)
+  }
+})
+
+window.addEventListener('popstate', () => {
+  app.currentRoute = window.location.pathname
+})
+
+
+
+</script>
+	
+	
+    
   </body>
 </html>
