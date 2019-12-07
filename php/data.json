@@ -1,4 +1,5 @@
 [
-  {"name":"Abhishek1","password":"123","contact":"1111111111","country":"India"},
-  {"name":"Rahul","password":"1s","contact":"1sdfsdf","country":"India"},{"name":"Abhishek","password":"aar","contact":"asdbsfg","country":"India"}
+	{
+		"name":"Abhishek","password":"123","contact":"1111111111","country":"India"
+	}
 ]
