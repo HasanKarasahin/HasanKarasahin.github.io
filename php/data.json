@@ -1,8 +1,34 @@
 [
 	{
-		"name":"TestName",
-		"password":"123",
-		"contact":"1111111111",
-		"country":"India"
+		"kitapAdi" : "Ygs-Lys Matematik",
+		"paylasanKisi" : "hidayet128@hotmail.com",
+		"paylasilanYer" : "Adana",
+		"paylasimTarihi" : "2017-12-28 12:47",
+		"tip" : 1,
+		"yazarAdi" : "yazar1"
+	},
+	{
+		"kitapAdi" : "Ygs-Lys Matematik",
+		"paylasanKisi" : "hidayet128@hotmail.com",
+		"paylasilanYer" : "Adana",
+		"paylasimTarihi" : "2017-12-28 12:47",
+		"tip" : 1,
+		"yazarAdi" : "yazar2"
+	},
+	{
+		"kitapAdi" : "Ygs-Lys Matematik",
+		"paylasanKisi" : "hidayet128@hotmail.com",
+		"paylasilanYer" : "Adana",
+		"paylasimTarihi" : "2017-12-28 12:47",
+		"tip" : 1,
+		"yazarAdi" : "yazar3"
+	},
+	{
+		"kitapAdi" : "Ygs-Lys Matematik",
+		"paylasanKisi" : "hidayet128@hotmail.com",
+		"paylasilanYer" : "Adana",
+		"paylasimTarihi" : "2017-12-28 12:47",
+		"tip" : 1,
+		"yazarAdi" : "yazar4"
 	}
 ]
