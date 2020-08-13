@@ -7,3 +7,7 @@ body{
 .container{
     padding: 10px;
 }
+
+.content{
+    padding-top: 10px;
+}
