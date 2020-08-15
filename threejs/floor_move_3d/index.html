@@ -13,21 +13,31 @@
 	<script src = "three.js"></script>
 	<script src = "perlin.js"></script>
 	<script src = "PointerLockControls.js"></script>
- 	<script type="text/javascript">
+	<script src = "three/GLTFLoader.js"></script>
+
+
+	<script src = "components/text.js"></script>
+	<script src="components/loadModel.js"></script>
+
+
+	 <script type="text/javascript">
+	 
+	 	var scene, camera, renderer, controls, model, hemiLight, spotLight;
 
  		var scene = new THREE.Scene();
+		scene.background = new THREE.Color(0xf0f0f0);
 		var renderer = new THREE.WebGLRenderer();
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(renderer.domElement);
 		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 		camera.position.x = 150;
-		camera.position.y = 5;
+		camera.position.y = 8;
 		camera.position.z = 100;
 
 
 		var loader = new THREE.TextureLoader();
-		let baseDir = 'texture/mermer';
+		let baseDir = 'texture/parke';
 		var materialArray = [
         
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side4.jpg")}),
@@ -59,10 +69,12 @@
 			this.y = y;
 			this.z = z;
 
+			let block;
+
 			this.display = function(){
 				var blockBox = new THREE.BoxBufferGeometry(5,5,5); //w, h, d  
 				//var blockMesh = new THREE.MeshBasicMaterial({color : 0x00ff00});
-				var block = new THREE.Mesh(blockBox, materialArray);
+				block = new THREE.Mesh(blockBox, materialArray);
 				scene.add(block);
 				block.position.x = this.x;
 				block.position.y = this.y;
@@ -90,6 +102,13 @@
 
 		});
 
+
+	
+		add2dText({text:'Hasan Burada'});
+
+		loadModelFromGLFT({coordinates:{x:0,y:20,z:30},source:'mazda'});
+		//loadModelFromGLFT({coordinates:{x:250,y:20,z:30},source:'stand_6x3_peninsula'});
+
 		
 		var blocks = [];
 		var amplitude = 100
@@ -99,6 +118,8 @@
 				blocks.push(new Block(x * 5, v , z * 5));
 			}		
 		}
+
+		blocks.push(new Block(5,5,50));
 
 		for(var i = 0; i < blocks.length; i++){
 			blocks[i].display();
@@ -133,6 +154,15 @@
 		function update(){
 			if(keys.includes("w")){
 				controls.moveForward(movingSpeed);
+				for(var i = 0; i < blocks.length; i++){
+						for(var j = 0; j < blocks[i].length; j++){
+							if(camera.position.x <= blocks[i][j].x + 2.5 && camera.position.x >= blocks[i][j].x - 2.5 && camera.position.z <= blocks[i][j].z + 2.5 && camera.position.z >= blocks[i][j].z - 2.5){
+								if(camera.position.y == blocks[i][j].y - 2.5){
+									controls.moveForward(-1 * movingSpeed);
+								}
+							}
+						}
+					}
 			}
 			if(keys.includes("a")){
 				controls.moveRight(-1 * movingSpeed);
@@ -144,6 +174,24 @@
 				controls.moveRight(movingSpeed);
 			}
 		}
+
+
+
+			// create a light
+			var light = new THREE.PointLight(0xffffff);
+			light.position.set(0, 250, 0);
+			scene.add(light);
+			var ambientLight = new THREE.AmbientLight(0x111111);
+			// scene.add(ambientLight);
+
+		// Sphere parameters: radius, segments along width, segments along height
+		var sphereGeometry = new THREE.SphereGeometry(50, 32, 16);
+			// use a "lambert" material rather than "basic" for realistic lighting.
+			//   (don't forget to add (at least one) light!)
+			var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0x8888ff });
+			var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+			sphere.position.set(150, 50, -50);
+			scene.add(sphere);
 	
 
 		// Resize Window
