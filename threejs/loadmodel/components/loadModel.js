@@ -2,6 +2,8 @@
 
 function loadModelFromGLFT(props){
 
+    THREE.Cache.enabled = true;
+
     if(!hemiLight){
         hemiLight = new THREE.HemisphereLight(0xffeeb1, 0xCC0000, 4);
         scene.add(hemiLight);
@@ -28,22 +30,30 @@ function loadModelFromGLFT(props){
         document.body.appendChild( renderer.domElement );
     }
 
-
-
-
-				new THREE.GLTFLoader().load('model/'+props.source+'/scene.gltf',result=>{
-                    model = result.scene.children[0];
+            var loader = new THREE.GLTFLoader();
+            loader.load( 'model/'+props.source+'/scene.gltf',
+                function ( gltf ) {
+                    model = gltf.scene.children[0];
                     model.position.x = props.coordinates.x;
                     model.position.y = props.coordinates.y;
                     model.position.z = props.coordinates.z;
-					model.traverse(n =>{
-						if(n.isMesh){
-							n.castShadow = true;
-							n.receiveShadow = true;
-							if(n.material.map) n.material.map.anisotropy = 16
-						}
-					});
-					scene.add(model);
-					animate();
-				});
+
+                    if(props.rotations){
+                        model.rotation.x += props.rotations.x;
+                        model.rotation.y += props.rotations.y;
+                        model.rotation.z += props.rotations.z;
+                    }
+
+                    model.traverse(n =>{
+                            if(n.isMesh){
+                                n.castShadow = true;
+                                n.receiveShadow = true;
+                                if(n.material.map) n.material.map.anisotropy = 16
+                            }
+                        });
+                    scene.add(model);
+                    animate();
+                }, (xhr) => xhr, ( err ) => console.error( err ));
+
+
 }

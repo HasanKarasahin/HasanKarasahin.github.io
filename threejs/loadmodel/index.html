@@ -25,7 +25,12 @@
 
 				controls = new THREE.OrbitControls(camera);
 
-				loadModelFromGLFT({coordinates:{x:0,y:20,z:30},source:'mazda'});
+				loadModelFromGLFT({coordinates:{x:0,y:0,z:0},source:'balsan'});
+				loadModelFromGLFT({coordinates:{x:50,y:0,z:-500},source:'stand_6x3_peninsula',rotations:{
+					x:0,
+					y:0,
+					z:-80
+				}});
 				//loadModelFromGLFT({coordinates:{x:250,y:20,z:30},source:'stand_6x3_peninsula'});
 				//loadModelFromGLFT({coordinates:{x:250,y:20,z:30},source:'scene.glb.gltf'});
 			}
