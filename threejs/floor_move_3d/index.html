@@ -26,10 +26,10 @@
 <body>
 
 <div style="width:100%;height:250px;text-align: center; color:white;" class="ui">Info header</div>
-<button style="top:0"  class="ui"><h1 id="move_left">Sol</h1></button>
-<button style="bottom:0"  class="ui"><h1 id="move_forward">Ileri</h1></button>
-<button style="right:0"  class="ui"><h1 id="move_right">Sag</h1></button>
-<button style="right:0; bottom:0;"  class="ui"><h1 id="move_back">Geri</h1></button>
+<button style="top:0"  class="ui" id="move_left"><h1 >Sol</h1></button>
+<button style="bottom:0"  class="ui" id="move_forward"><h1 >Ileri</h1></button>
+<button style="right:0"  class="ui" id="move_right"><h1 >Sag</h1></button>
+<button style="right:0; bottom:0;"  class="ui" id="move_back"><h1 >Geri</h1></button>
 
 	<script src = "three.js"></script>
 	<script src = "perlin.js"></script>
@@ -53,14 +53,22 @@
 
 			 let target = event.target.id;
 
-			 let procces = {
-			 	"move_left":controls.moveRight(-1 * movingSpeed),
-			 	"move_forward":controls.moveForward(movingSpeed),
-			 	"move_right":controls.moveRight(movingSpeed),
-			 	"move_back":controls.moveForward(-1 * movingSpeed),
-			 };
-
-			 eval(procces.target);
+			 switch(target) {
+				 case "move_left":
+					 controls.moveRight(-1 * movingSpeed)
+					 break;
+				 case "move_forward":
+					 controls.moveForward(movingSpeed)
+					 break;
+				 case "move_right":
+					 controls.moveRight(movingSpeed)
+					 break;
+				 case "move_back":
+					 controls.moveForward(-1 * movingSpeed)
+					 break;
+				 default:
+					 controls.moveForward(movingSpeed)
+			 }
 
 		 }
 
