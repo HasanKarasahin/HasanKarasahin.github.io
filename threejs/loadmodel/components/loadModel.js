@@ -15,23 +15,23 @@ function loadModelFromGLFT(props){
         spotLight.shadow.mapSize.height = 1024*4;
         scene.add(spotLight);
     }
-   
+
     if(!renderer){
         scene.add(new THREE.AxesHelper(500));
 
         renderer = new THREE.WebGLRenderer();
         renderer.toneMapping = THREE.ReinhardToneMapping;
         renderer.toneMappingExposure = 2.3;
-       
+
         renderer.shadowMap.enabled = true;
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
     }
-   
 
 
 
-				new THREE.GLTFLoader().load('model/scene.glb.gltf',result=>{
+
+				new THREE.GLTFLoader().load('model/'+props.source+'/scene.gltf',result=>{
                     model = result.scene.children[0];
                     model.position.x = props.coordinates.x;
                     model.position.y = props.coordinates.y;
