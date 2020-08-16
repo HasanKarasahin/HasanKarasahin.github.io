@@ -94,6 +94,8 @@
 
 		var loader = new THREE.TextureLoader();
 		let baseDir = 'texture/parke';
+		let baseDir_wall = 'texture/zumrut-duvar-kagidi';
+		let baseDir_laminant_parke = 'texture/laminant-parke';
 		var materialArray = [
 
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side4.jpg")}),
@@ -102,6 +104,26 @@
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/bottom.jpg")}),
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side2.jpg")}),
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side3.jpg")}),
+
+		];
+		var materialArray_wall = [
+
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/side4.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/side1.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/top.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/bottom.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/side2.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/side3.jpg")}),
+
+		];
+		var materialArray_laminant_parke = [
+
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side4.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side1.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/top.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/bottom.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side2.jpg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side3.jpg")}),
 
 		];
 
@@ -120,7 +142,7 @@
 		*/
 
 
-		function Block(x,y,z){
+		function Block(x,y,z,isWall=false){
 			this.x = x;
 			this.y = y;
 			this.z = z;
@@ -130,20 +152,20 @@
 			this.display = function(){
 				var blockBox = new THREE.BoxBufferGeometry(5,5,5); //w, h, d
 				//var blockMesh = new THREE.MeshBasicMaterial({color : 0x00ff00});
-				block = new THREE.Mesh(blockBox, materialArray);
+				block = new THREE.Mesh(blockBox, isWall?materialArray_wall:materialArray_laminant_parke);
 				scene.add(block);
 				block.position.x = this.x;
 				block.position.y = this.y;
 				block.position.z = this.z;
 
 
-				// Creating the border lines for ground
-				var edges = new THREE.EdgesGeometry(blockBox);
-				var line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({color : 0xfffffff}));
-				scene.add(line);
-				line.position.x = this.x;
-				line.position.y = this.y;
-				line.position.z = this.z;
+				// // Creating the border lines for ground
+				// var edges = new THREE.EdgesGeometry(blockBox);
+				// var line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({color : 0xfffffff}));
+				// scene.add(line);
+				// line.position.x = this.x;
+				// line.position.y = this.y;
+				// line.position.z = this.z;
 			}
 		}
 
@@ -187,7 +209,6 @@
 					],
 					source:'exp4',
 					isModelOutDir:false});
-		//loadModelFromGLFT({coordinates:{x:250,y:20,z:30},source:'stand_6x3_peninsula'});
 
 
 		var blocks = [];
@@ -199,11 +220,37 @@
 			}
 		}
 
+		 //SAG
+		 for(let x = 0 ; x < 31 ; x++){
+			 for(let z = 0 ; z < 10 ; z++){
+				 var v = Math.round(noise.perlin2(x,z) * amplitude / 5) * 5;
+				 blocks.push(new Block(x * 5,z * 5,v-5,'wall'));
+			 }
+		 }
+
+		 //SOL
+		 for(let x = 0 ; x < 31 ; x++){
+			 for(let z = 0 ; z < 10 ; z++){
+				 var v = Math.round(noise.perlin2(x,z) * amplitude / 5) * 5;
+				 blocks.push(new Block(x * 5,z * 5,150,'wall'));
+			 }
+		 }
+
+		 //SOL1
+		 for(let x = 0 ; x < 31 ; x++){
+		  for(let z = 0 ; z < 10 ; z++){
+		 	 var v = Math.round(noise.perlin2(x,z) * amplitude / 5) * 5;
+		 	 blocks.push(new Block(0,v+z*5,x*5,'wall'));
+		  }
+		 }
+
 		blocks.push(new Block(5,5,50));
 
 		for(var i = 0; i < blocks.length; i++){
 			blocks[i].display();
 		}
+
+
 
 
 
@@ -234,15 +281,15 @@
 		function update(){
 			if(keys.includes("w")){
 				controls.moveForward(movingSpeed);
-				for(var i = 0; i < blocks.length; i++){
-						for(var j = 0; j < blocks[i].length; j++){
-							if(camera.position.x <= blocks[i][j].x + 2.5 && camera.position.x >= blocks[i][j].x - 2.5 && camera.position.z <= blocks[i][j].z + 2.5 && camera.position.z >= blocks[i][j].z - 2.5){
-								if(camera.position.y == blocks[i][j].y - 2.5){
-									controls.moveForward(-1 * movingSpeed);
-								}
-							}
-						}
-					}
+				// for(var i = 0; i < blocks.length; i++){
+				// 		for(var j = 0; j < blocks[i].length; j++){
+				// 			if(camera.position.x <= blocks[i][j].x + 2.5 && camera.position.x >= blocks[i][j].x - 2.5 && camera.position.z <= blocks[i][j].z + 2.5 && camera.position.z >= blocks[i][j].z - 2.5){
+				// 				if(camera.position.y == blocks[i][j].y - 2.5){
+				// 					controls.moveForward(-1 * movingSpeed);
+				// 				}
+				// 			}
+				// 		}
+				// 	}
 			}
 			if(keys.includes("a")){
 				controls.moveRight(-1 * movingSpeed);
