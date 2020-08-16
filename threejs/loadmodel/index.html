@@ -10,7 +10,7 @@
 		<script src="js/three/three.min.js"></script>
 		<script src="js/three/GLTFLoader.js"></script>
 		<script src="js/three/OrbitControls.js"></script>
-		
+
 		<script src="components/loadModel.js"></script>
 		<script>
 
@@ -25,9 +25,9 @@
 
 				controls = new THREE.OrbitControls(camera);
 
-				//loadModelFromGLFT({coordinates:{x:0,y:20,z:30},source:'mazda'});
+				loadModelFromGLFT({coordinates:{x:0,y:20,z:30},source:'mazda'});
 				//loadModelFromGLFT({coordinates:{x:250,y:20,z:30},source:'stand_6x3_peninsula'});
-				loadModelFromGLFT({coordinates:{x:250,y:20,z:30},source:'scene.glb.gltf'});
+				//loadModelFromGLFT({coordinates:{x:250,y:20,z:30},source:'scene.glb.gltf'});
 			}
 
 
@@ -39,10 +39,10 @@
 					camera.position.z +10
 				);
 				requestAnimationFrame(animate);
-			};		
+			};
 
 			init();
 		</script>
-		
+
 	</body>
 </html>
