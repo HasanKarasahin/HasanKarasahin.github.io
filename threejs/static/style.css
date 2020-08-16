@@ -1,5 +1,7 @@
-body{
-    background-color: antiquewhite;
+body {
+    overflow: hidden;
+    margin: 0;
+    background-color: #c68326;
     margin: 0;
     padding: 0;
 }
@@ -10,4 +12,12 @@ body{
 
 .content{
     padding-top: 10px;
+}
+
+.ui {
+    position: absolute;
+}
+
+button{
+    margin: 20px;
 }

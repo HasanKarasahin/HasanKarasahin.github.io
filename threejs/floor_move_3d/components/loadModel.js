@@ -2,6 +2,8 @@
 
 function loadModelFromGLFT(props){
 
+    THREE.Cache.enabled = true;
+
     if(!hemiLight){
         hemiLight = new THREE.HemisphereLight(0xffeeb1, 0xCC0000, 4);
         scene.add(hemiLight);
@@ -28,26 +30,40 @@ function loadModelFromGLFT(props){
         document.body.appendChild( renderer.domElement );
     }
 
-                let modelPath = !(props.isModelInDir)?'model/'+props.source+'/scene.gltf':props.source+'.gltf';
+                let modelPath = props.isModelOutDir?props.source+'.gltf':props.source+'/scene.gltf';
                 //
                 // console.log(modelPath);
                 //
 
+                //debugger
 
-				new THREE.GLTFLoader().load(modelPath,result=>{
-                    model = result.scene.children[0];
-                    model.position.x = props.coordinates.x;
-                    model.position.y = props.coordinates.y;
-                    model.position.z = props.coordinates.z;
-                    //model.setSize(90,90);
-					model.traverse(n =>{
-						if(n.isMesh){
-							n.castShadow = true;
-							n.receiveShadow = true;
-							if(n.material.map) n.material.map.anisotropy = 16
-						}
-					});
-					scene.add(model);
-					//animate();
-				});
+
+    props.coordinates.forEach((values,index)=>{
+        new THREE.GLTFLoader().load('model/'+modelPath,result=>{
+
+            model = result.scene;
+
+            model.position.x = values.x;
+            model.position.y = values.y;
+            model.position.z = values.z;
+
+            if(values.rotation){
+                model.rotation.x += values.rotation.x;
+                model.rotation.y += values.rotation.y;
+                model.rotation.z += values.rotation.z;
+            }
+
+
+            model.traverse(n =>{
+                if(n.isMesh){
+                    n.castShadow = true;
+                    n.receiveShadow = true;
+                    if(n.material.map) n.material.map.anisotropy = 16
+                    n.material = n.material.clone();
+                }
+            });
+            scene.add(model);
+        });
+    });
+
 }
