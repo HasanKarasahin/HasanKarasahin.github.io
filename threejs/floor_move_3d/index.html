@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Fuar Alanı</title>
+	<title>Sanal Fuar</title>
 	<style>
 		body {
 			overflow: hidden;
@@ -25,11 +25,11 @@
 </head>
 <body>
 
-<div style="width:100%;height:250px;text-align: center; color:white;" class="ui">Info header</div>
-<button style="top:0"  class="ui" id="move_left"><h1 >Sol</h1></button>
-<button style="bottom:0"  class="ui" id="move_forward"><h1 >Ileri</h1></button>
-<button style="right:0"  class="ui" id="move_right"><h1 >Sag</h1></button>
-<button style="right:0; bottom:0;"  class="ui" id="move_back"><h1 >Geri</h1></button>
+<!--<div style="width:100%;height:250px;text-align: center; color:white;" class="ui">Info header</div>-->
+<!--<button style="top:0"  class="ui" id="move_left"><h1 >Sol</h1></button>-->
+<!--<button style="bottom:0"  class="ui" id="move_forward"><h1 >Ileri</h1></button>-->
+<!--<button style="right:0"  class="ui" id="move_right"><h1 >Sag</h1></button>-->
+<!--<button style="right:0; bottom:0;"  class="ui" id="move_back"><h1 >Geri</h1></button>-->
 
 	<script src = "three.js"></script>
 	<script src = "perlin.js"></script>
@@ -96,6 +96,7 @@
 		let baseDir = 'texture/parke';
 		let baseDir_wall = 'texture/zumrut-duvar-kagidi';
 		let baseDir_laminant_parke = 'texture/laminant-parke';
+		let baseDir_floor_one_red = 'texture/floor1-red';
 		var materialArray = [
 
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side4.jpg")}),
@@ -126,6 +127,16 @@
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side3.jpg")}),
 
 		];
+		var materialArray_floor_one_red = [
+
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_one_red+"/top.jpeg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_one_red+"/top.jpeg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_one_red+"/top.jpeg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_one_red+"/top.jpeg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_one_red+"/top.jpeg")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_one_red+"/top.jpeg")}),
+
+		];
 
 	/*
 		var groundBox = new THREE.BoxBufferGeometry(25, 1, 50);
@@ -152,7 +163,7 @@
 			this.display = function(){
 				var blockBox = new THREE.BoxBufferGeometry(5,5,5); //w, h, d
 				//var blockMesh = new THREE.MeshBasicMaterial({color : 0x00ff00});
-				block = new THREE.Mesh(blockBox, isWall?materialArray_wall:materialArray_laminant_parke);
+				block = new THREE.Mesh(blockBox, isWall?materialArray_wall:materialArray_floor_one_red);
 				scene.add(block);
 				block.position.x = this.x;
 				block.position.y = this.y;
@@ -182,7 +193,7 @@
 
 
 
-		add2dText({text:'----'});
+		add2dText({text:'Sanal Fuar'});
 
 		//loadModelFromGLFT({coordinates:{x:0,y:20,z:30},source:'mazda'});
 
@@ -300,6 +311,8 @@
 			if(keys.includes("d")){
 				controls.moveRight(movingSpeed);
 			}
+
+			console.log(camera.position);
 		}
 
 
