@@ -37,6 +37,9 @@
 	<script src = "three/GLTFLoader.js"></script>
 
 
+	<script src = "js/dat.gui.min.js"></script>
+
+
 	<script src = "components/text.js"></script>
 	<script src="components/loadModel.js"></script>
 
@@ -77,7 +80,7 @@
 	 	var scene, camera, renderer, controls, hemiLight, spotLight;
 
  		var scene = new THREE.Scene();
-		scene.background = new THREE.Color(0xf0f0f0);
+		scene.background = new THREE.Color(0x4372a0);
 		var renderer = new THREE.WebGLRenderer();
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(renderer.domElement);
@@ -97,6 +100,7 @@
 		let baseDir_wall = 'texture/zumrut-duvar-kagidi';
 		let baseDir_laminant_parke = 'texture/laminant-parke';
 		let baseDir_floor_one_red = 'texture/floor1-red';
+		let baseDir_floor_beyaz = 'texture/floor-beyaz';
 		var materialArray = [
 
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side4.jpg")}),
@@ -137,6 +141,16 @@
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_one_red+"/top.jpeg")}),
 
 		];
+		var materialArray_floor_beyaz = [
+
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_beyaz+"/top.png")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_beyaz+"/top.png")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_beyaz+"/top.png")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_beyaz+"/top.png")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_beyaz+"/top.png")}),
+			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_beyaz+"/top.png")}),
+
+		];
 
 	/*
 		var groundBox = new THREE.BoxBufferGeometry(25, 1, 50);
@@ -163,7 +177,7 @@
 			this.display = function(){
 				var blockBox = new THREE.BoxBufferGeometry(5,5,5); //w, h, d
 				//var blockMesh = new THREE.MeshBasicMaterial({color : 0x00ff00});
-				block = new THREE.Mesh(blockBox, isWall?materialArray_wall:materialArray_floor_one_red);
+				block = new THREE.Mesh(blockBox, isWall?materialArray_floor_beyaz:materialArray_floor_one_red);
 				scene.add(block);
 				block.position.x = this.x;
 				block.position.y = this.y;
@@ -182,7 +196,7 @@
 
 		var controls = new THREE.PointerLockControls(camera, document.body);
 		document.body.addEventListener("click", function(){
-			controls.lock();
+			//controls.lock();
 		});
 		controls.addEventListener("lock", function(){
 
@@ -213,12 +227,12 @@
 						{x:110,y:3,z:6},
 						{x:140,y:3,z:6},
 
-						{x:130,y:3,z:135,rotation:rotationBlock},
-						{x:90,y:3,z:135,rotation:rotationBlock},
-						{x:50,y:3,z:135,rotation:rotationBlock},
-						{x:15,y:3,z:135,rotation:rotationBlock},
+						{x:130,y:3,z:130,rotation:rotationBlock},
+						{x:90,y:3,z:130,rotation:rotationBlock},
+						{x:50,y:3,z:130,rotation:rotationBlock},
+						{x:15,y:3,z:130,rotation:rotationBlock},
 					],
-					source:'exp4',
+					source:'exp7',
 					isModelOutDir:false});
 
 
@@ -255,7 +269,7 @@
 		  }
 		 }
 
-		blocks.push(new Block(5,5,50));
+		//blocks.push(new Block(5,5,50));
 
 		for(var i = 0; i < blocks.length; i++){
 			blocks[i].display();
@@ -288,9 +302,9 @@
 		var movingSpeed = 1.5;
 		var ySpeed = 0;
 		var acc = 0.08;
-		var autoJump = false;
 		function update(){
 			if(keys.includes("w")){
+				controls.lock();
 				controls.moveForward(movingSpeed);
 				// for(var i = 0; i < blocks.length; i++){
 				// 		for(var j = 0; j < blocks[i].length; j++){
@@ -312,9 +326,33 @@
 				controls.moveRight(movingSpeed);
 			}
 
-			console.log(camera.position);
+			if(camera.position.x >= 120 && camera.position.x <= 143){
+				if(camera.position.z >= 10 && camera.position.z <= 25){
+					console.log('------');
+					gui.open();
+				}else{
+					gui.close();
+				}
+			}
+			//console.log(camera.position);
 		}
 
+		 options = {
+			 mazda: () => {
+				 window.open("https://hasankarasahin.github.io/threejs/loadmodel/index.html");
+			 },
+			 honda: () => {
+				 window.open("https://hasankarasahin.github.io/threejs/loadmodel/index.html");
+			 },
+		 }
+
+		 var gui = new dat.GUI();
+
+		 var folder1 = gui.addFolder('Urunler');
+
+		 gui.add(this.options,'mazda').name('Mazda');
+		 gui.add(this.options,'honda').name('Honda');
+		 gui.close();
 
 		// Resize Window
 		window.addEventListener("resize", function(){

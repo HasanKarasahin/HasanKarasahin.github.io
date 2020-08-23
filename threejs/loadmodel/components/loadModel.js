@@ -30,7 +30,35 @@ function loadModelFromGLFT(props){
         document.body.appendChild( renderer.domElement );
     }
 
-            var loader = new THREE.GLTFLoader();
+    var manager = new THREE.LoadingManager();
+    manager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+
+        console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+
+    };
+
+    manager.onLoad = function ( ) {
+
+        console.log( 'Loading complete!');
+
+        scene.add(model);
+
+    };
+
+
+    manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+
+        console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+
+    };
+
+    manager.onError = function ( url ) {
+
+        console.log( 'There was an error loading ' + url );
+
+    };
+
+            var loader = new THREE.GLTFLoader(manager);
             loader.load( 'model/'+props.source+'/scene.gltf',
                 function ( gltf ) {
                     model = gltf.scene.children[0];
@@ -51,7 +79,6 @@ function loadModelFromGLFT(props){
                                 if(n.material.map) n.material.map.anisotropy = 16
                             }
                         });
-                    scene.add(model);
                     animate();
                 }, (xhr) => xhr, ( err ) => console.error( err ));
 
