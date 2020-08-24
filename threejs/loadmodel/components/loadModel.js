@@ -41,7 +41,7 @@ function loadModelFromGLFT(props){
 
         console.log( 'Loading complete!');
 
-        scene.add(model);
+
 
     };
 
@@ -79,6 +79,7 @@ function loadModelFromGLFT(props){
                                 if(n.material.map) n.material.map.anisotropy = 16
                             }
                         });
+                    scene.add(model);
                     animate();
                 }, (xhr) => xhr, ( err ) => console.error( err ));
 
