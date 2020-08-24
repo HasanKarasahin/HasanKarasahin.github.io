@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE>
 <html>
 <head>
 	<title>Sanal Fuar</title>
@@ -7,29 +7,9 @@
 			overflow: hidden;
 			margin: 0;
 		}
-
-		.ui {
-			position: absolute;
-		}
-
-		button{
-			margin: 100px;
-			height: 200px;
-			width: 200px;
-		}
-
-		h1{
-			font-size: 50px;
-		}
 	</style>
 </head>
 <body>
-
-<!--<div style="width:100%;height:250px;text-align: center; color:white;" class="ui">Info header</div>-->
-<!--<button style="top:0"  class="ui" id="move_left"><h1 >Sol</h1></button>-->
-<!--<button style="bottom:0"  class="ui" id="move_forward"><h1 >Ileri</h1></button>-->
-<!--<button style="right:0"  class="ui" id="move_right"><h1 >Sag</h1></button>-->
-<!--<button style="right:0; bottom:0;"  class="ui" id="move_back"><h1 >Geri</h1></button>-->
 
 	<script src = "three.js"></script>
 	<script src = "perlin.js"></script>
@@ -46,36 +26,7 @@
 
 	 <script type="text/javascript">
 
-		 var buttons = document.getElementsByTagName("button");
-		 for (let i = 0; i < buttons.length; i++) {
-			 buttons[i].addEventListener("click", onButtonClick, false);
-		 };
-
-		 function onButtonClick(event) {
-			 console.log(event.target.id);
-
-			 let target = event.target.id;
-
-			 switch(target) {
-				 case "move_left":
-					 controls.moveRight(-1 * movingSpeed)
-					 break;
-				 case "move_forward":
-					 controls.moveForward(movingSpeed)
-					 break;
-				 case "move_right":
-					 controls.moveRight(movingSpeed)
-					 break;
-				 case "move_back":
-					 controls.moveForward(-1 * movingSpeed)
-					 break;
-				 default:
-					 controls.moveForward(movingSpeed)
-			 }
-
-		 }
-
-
+		 THREE.Cache.enabled = true;
 
 	 	var scene, camera, renderer, controls, hemiLight, spotLight;
 
@@ -90,47 +41,13 @@
 		camera.position.y = 8;
 		camera.position.z = 90;
 
-		//camera.rotation.x -= 50;
-		camera.rotation.y -= 250;
-		//camera.rotation.z += -50;
+		camera.rotation.y -= 250;;
 
 
 		var loader = new THREE.TextureLoader();
-		let baseDir = 'texture/parke';
-		let baseDir_wall = 'texture/zumrut-duvar-kagidi';
-		let baseDir_laminant_parke = 'texture/laminant-parke';
 		let baseDir_floor_one_red = 'texture/floor1-red';
 		let baseDir_floor_beyaz = 'texture/floor-beyaz';
-		var materialArray = [
 
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side4.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side1.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/top.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/bottom.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side2.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir+"/side3.jpg")}),
-
-		];
-		var materialArray_wall = [
-
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/side4.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/side1.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/top.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/bottom.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/side2.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_wall+"/side3.jpg")}),
-
-		];
-		var materialArray_laminant_parke = [
-
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side4.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side1.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/top.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/bottom.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side2.jpg")}),
-			new THREE.MeshBasicMaterial({map : loader.load(baseDir_laminant_parke+"/side3.jpg")}),
-
-		];
 		var materialArray_floor_one_red = [
 
 			new THREE.MeshBasicMaterial({map : loader.load(baseDir_floor_one_red+"/top.jpeg")}),
@@ -152,21 +69,6 @@
 
 		];
 
-	/*
-		var groundBox = new THREE.BoxBufferGeometry(25, 1, 50);
-		var groundMesh = new THREE.MeshBasicMaterial({color : 0x00ff00});
-		var ground = new THREE.Mesh(groundBox, groundMesh);
-		scene.add(ground);
-		ground.position.y = -5;
-
-		// Creating the border lines for ground
-		var edges = new THREE.EdgesGeometry(groundBox);
-		var line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({color : 0x000000}));
-		scene.add(line);
-		line.position.y = -5;
-		*/
-
-
 		function Block(x,y,z,isWall=false){
 			this.x = x;
 			this.y = y;
@@ -176,21 +78,11 @@
 
 			this.display = function(){
 				var blockBox = new THREE.BoxBufferGeometry(5,5,5); //w, h, d
-				//var blockMesh = new THREE.MeshBasicMaterial({color : 0x00ff00});
 				block = new THREE.Mesh(blockBox, isWall?materialArray_floor_beyaz:materialArray_floor_one_red);
 				scene.add(block);
 				block.position.x = this.x;
 				block.position.y = this.y;
 				block.position.z = this.z;
-
-
-				// // Creating the border lines for ground
-				// var edges = new THREE.EdgesGeometry(blockBox);
-				// var line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({color : 0xfffffff}));
-				// scene.add(line);
-				// line.position.x = this.x;
-				// line.position.y = this.y;
-				// line.position.z = this.z;
 			}
 		}
 
@@ -205,11 +97,7 @@
 
 		});
 
-
-
 		add2dText({text:'Sanal Fuar'});
-
-		//loadModelFromGLFT({coordinates:{x:0,y:20,z:30},source:'mazda'});
 
 
 		let rotationBlock = {
@@ -269,15 +157,10 @@
 		  }
 		 }
 
-		//blocks.push(new Block(5,5,50));
 
 		for(var i = 0; i < blocks.length; i++){
 			blocks[i].display();
 		}
-
-
-
-
 
 		var keys = [];
 		var canJump = true;
@@ -306,15 +189,6 @@
 			if(keys.includes("w")){
 				controls.lock();
 				controls.moveForward(movingSpeed);
-				// for(var i = 0; i < blocks.length; i++){
-				// 		for(var j = 0; j < blocks[i].length; j++){
-				// 			if(camera.position.x <= blocks[i][j].x + 2.5 && camera.position.x >= blocks[i][j].x - 2.5 && camera.position.z <= blocks[i][j].z + 2.5 && camera.position.z >= blocks[i][j].z - 2.5){
-				// 				if(camera.position.y == blocks[i][j].y - 2.5){
-				// 					controls.moveForward(-1 * movingSpeed);
-				// 				}
-				// 			}
-				// 		}
-				// 	}
 			}
 			if(keys.includes("a")){
 				controls.moveRight(-1 * movingSpeed);
@@ -334,7 +208,6 @@
 					gui.close();
 				}
 			}
-			//console.log(camera.position);
 		}
 
 		 options = {
@@ -373,8 +246,6 @@
 
 		GameLoop();
  	</script>
-
-
 
 </body>
 </html>

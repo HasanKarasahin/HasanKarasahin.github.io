@@ -1,4 +1,5 @@
 function add2dText(props){
+	THREE.Cache.enabled = true;
     	/////// draw text on canvas /////////
 
 	// create a canvas element
